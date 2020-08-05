@@ -1,0 +1,33 @@
+{
+  "name": "msp-orchestrator",
+  "version": "1.0.0",
+  "description": "Orchestrator for My Sweet Paris application",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BALcorp/msp-orchestrator.git"
+  },
+  "keywords": [
+    "bal",
+    "orchestrator",
+    "afcepf",
+    "webservice",
+    "msp",
+    "mysweetparis",
+    "fun",
+    "lulz"
+  ],
+  "author": "Ben - Axel - Lionel - B.A.L Corporation",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/BALcorp/msp-orchestrator/issues"
+  },
+  "homepage": "https://github.com/BALcorp/msp-orchestrator#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "express": "^4.17.1"
+  }
+}
