@@ -29,7 +29,7 @@ app.get("fin_url" , asyncToResp(
 	    );
 */
 
-//exemple URL:  http://localhost:8484/orchestrator-api/public/propositionPret
+//exemple URL:  http://localhost:8054/orchestrator-api/public/propositionPret
                //?nbMois=120&montant=20000
 apiRouter.route('/orchestrator-api/public/propositionPret')
 .get(asyncToResp ( 
