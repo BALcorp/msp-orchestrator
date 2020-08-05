@@ -29,9 +29,9 @@ app.get("fin_url" , asyncToResp(
 	    );
 */
 
-//exemple URL:  http://localhost:8484/orchestrateur-api/public/propositionPret
+//exemple URL:  http://localhost:8484/orchestrator-api/public/propositionPret
                //?nbMois=120&montant=20000
-apiRouter.route('/orchestrateur-api/public/propositionPret')
+apiRouter.route('/orchestrator-api/public/propositionPret')
 .get(asyncToResp ( 
 	async function(req, res,next) {
 		try {

@@ -1,5 +1,5 @@
 var express = require('express');
-var orchestrateurApiRoutes = require('./orchestrateur-api-routes');
+var orchestratorApiRoutes = require('./orchestrator-api-routes');
 var bodyParser = require('body-parser');
 var app = express();
 
@@ -28,7 +28,7 @@ app.get('/', function(req , res , next) {
 res.redirect('html/index.html');
 });
 
-app.use(orchestrateurApiRoutes.apiRouter); 
+app.use(orchestratorApiRoutes.apiRouter);
 
 app.listen(8484 , function () {
 console.log("http://localhost:8484");
