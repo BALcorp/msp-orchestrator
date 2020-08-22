@@ -1,5 +1,5 @@
-const mspOrderUrl = "http://localhost:5000/msp-order";
-const mspProductHousingUrl = "http://localhost:8050/msp-product-housing";
+const mspOrderUrl = "http://localhost:5000/msp-order/rest/api";
+const mspProductHousingUrl = "http://localhost:8050/msp-product-housing/rest/product-api";
 
 const express = require('express');
 const apiRouter = express.Router();
@@ -35,7 +35,7 @@ apiRouter.route('/msp-orchestrator/rest/api/private/bookings').get(asyncToResp (
 	async function(req) {
 		try {
 			const idBooking = parseInt(req.query.clientId);
-			const bookingsByIdUrl = mspOrderUrl + "/rest/api/private/bookings/" + idBooking;
+			const bookingsByIdUrl = mspOrderUrl + "/private/bookings/" + idBooking;
 			let httpResponse = await axios.get(bookingsByIdUrl);
 			let bookings = httpResponse.data;
 			let idProduct;
@@ -45,7 +45,7 @@ apiRouter.route('/msp-orchestrator/rest/api/private/bookings').get(asyncToResp (
 			for (let i in bookings) {
 				booking = bookings[i];
 				idProduct = booking.idProduct;
-				productByIdUrl = mspProductHousingUrl + "/rest/product-api/public/product/" + idProduct;
+				productByIdUrl = mspProductHousingUrl + "/public/product/" + idProduct;
 				httpResponse = await axios.get(productByIdUrl);
 				product = httpResponse.data;
 				booking.title = product.title;
@@ -68,10 +68,10 @@ apiRouter.route('/msp-orchestrator/rest/api/private/bookings/:startDate/:endDate
 		try {
 			const startDate = req.params.startDate;
 			const endDate = req.params.endDate;
-			const bookingsByPeriodUrl = mspOrderUrl + "/rest/api/private/bookings/" + startDate + "/" + endDate;
+			const bookingsByPeriodUrl = mspOrderUrl + "/private/bookings/" + startDate + "/" + endDate;
 			let httpResponse = await axios.get(bookingsByPeriodUrl);
 			const bookings = httpResponse.data;
-			const allProductsUrl = mspProductHousingUrl + "/rest/product-api/public/product";
+			const allProductsUrl = mspProductHousingUrl + "/public/product";
 			httpResponse = await axios.get(allProductsUrl);
 			const products = httpResponse.data;
 			let idProduct;
@@ -82,7 +82,7 @@ apiRouter.route('/msp-orchestrator/rest/api/private/bookings/:startDate/:endDate
 			for (let i in bookings) {
 				booking = bookings[i];
 				idProduct = booking.idProduct;
-				productByIdUrl = mspProductHousingUrl + "/rest/product-api/public/product/" + idProduct;
+				productByIdUrl = mspProductHousingUrl + "/public/product/" + idProduct;
 				httpResponse = await axios.get(productByIdUrl);
 				bookedProduct = httpResponse.data;
 				for (let j in products) {
