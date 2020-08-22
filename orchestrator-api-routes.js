@@ -49,10 +49,8 @@ apiRouter.route('/msp-orchestrator/rest/api/private/bookings').get(asyncToResp (
 				httpResponse = await axios.get(productByIdUrl);
 				product = httpResponse.data;
 				booking.title = product.title;
-				booking.streetNumber = product.property.address.streetNumber;
-				booking.streetName = product.property.address.streetName;
-				booking.zipCode = product.property.address.city.zipCode;
-				booking.cityName = product.property.address.city.name;
+				booking.address = product.property.address;
+				booking.zipCode = product.property.zipCode;
 			}
 			return bookings;
 		} catch(ex) {
