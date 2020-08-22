@@ -1,16 +1,16 @@
-var express = require('express');
+const mspOrderUrl = "http://localhost:5000/msp-order";
+const mspProductHousingUrl = "http://localhost:8050/msp-product-housing";
+
+const express = require('express');
 const apiRouter = express.Router();
-//var request = require("request"); => maintenant considéré comme obsolète
-const axios = require("axios"); // mieux que request et retournant déjà des promises 
+const axios = require("axios");
 
-
-//fonction utilitaire pour encapsuler une fonction async 
-//au sein d'une route express
+// Utility function that encapsulate an async function within an express route.
 function asyncToResp(fn) {
     return function(req, res, next) {
-	  //fn is a alias/reference to a async function (returning data in Promise)
+	  // fn is an alias/reference to an async function (returning data in Promise).
       fn(req, res, next)
-      .then((data)=> { res.send(data) }) //retour d'un resultat converti en json 
+      .then((data)=> { res.send(data) }) // return of a result converted in Json.
       .catch((err)=>{ 
 	      res.status(500)
 		      .json({errorCode:'500', message: 'Internal Server Error'})
@@ -18,45 +18,46 @@ function asyncToResp(fn) {
     };
 }
 /*
-utilisation:
+Usage:
 app.get("fin_url" , asyncToResp( 
-                       async  function(req, res,next) {
-						   ...;
-						   var res1 = await appelAsync1(...);
-						   ...;
-						   return dataObj; //sera automatiquement transformé en json et renvoyé
-					   })
-	    );
+	async  function(req, res,next) {
+		...;
+		var res1 = await appelAsync1(...);
+		...;
+		return dataObj; // will be automatically converted in json and sent back.
+	})
+);
 */
 
-//exemple URL:  http://localhost:8054/orchestrator-api/public/propositionPret
-               //?nbMois=120&montant=20000
-apiRouter.route('/orchestrator-api/public/propositionPret')
-.get(asyncToResp ( 
+// URL with id=1: http://localhost:8054/msp-orchestrator/rest/api/private/bookings?id=1
+apiRouter.route('/msp-orchestrator/rest/api/private/bookings').get(asyncToResp (
 	async function(req, res,next) {
 		try {
-	var nbMois = parseInt(req.query.nbMois);
-	var montant = parseInt(req.query.montant);
-	var url1 = "http://localhost:8282/taux-api/public/tauxInteretCourant?nbMois="+nbMois;
-	var tauxInteretResponseJs;
-var httpResp1 = await axios.get(url1);
-tauxInteretResponseJs = httpResp1.data;
-var url2 = "http://localhost:8282/mensualite-api/public/mensualite?nbMois="
-+nbMois+"&taux=" + tauxInteretResponseJs.tauxInteret+"&montant=" + montant;
-var httpResp2 = await axios.get(url2);
-var mensualiteResponseJs = httpResp2.data;
-var jsRes = {
-	nbMois : nbMois ,
-	montant : montant , 
-	tauxInteret : tauxInteretResponseJs.tauxInteret,
-	mensualite : mensualiteResponseJs.mensualite,
-	fraisDossier : 100
-};
-return jsRes;
-	} catch(ex) {
-		throw new Error("echec")
-	}
-
-}));
+			const idBooking = parseInt(req.query.id);
+			const bookingsByIdUrl = mspOrderUrl + "/rest/api/private/bookings/" + idBooking;
+			let httpResponse = await axios.get(bookingsByIdUrl);
+			let bookingsJson = httpResponse.data;
+			let idProduct;
+			let productsByIdUrl;
+			let bookingJson;
+			let productJson;
+			for (let i in bookingsJson) {
+				bookingJson = bookingsJson[i];
+				idProduct = bookingJson.idProduct;
+				productsByIdUrl = mspProductHousingUrl + "/rest/product-api/public/product/" + idProduct;
+				httpResponse = await axios.get(productsByIdUrl);
+				productJson = httpResponse.data;
+				bookingJson.title = productJson.title;
+				bookingJson.streetNumber = productJson.property.address.streetNumber;
+				bookingJson.streetName = productJson.property.address.streetName;
+				bookingJson.zipCode = productJson.property.address.city.zipCode;
+				bookingJson.name = productJson.property.address.city.name;
+			}
+			return bookingsJson;
+		} catch(ex) {
+			throw new Error("echec")
+		}
+	})
+);
 
 exports.apiRouter = apiRouter;
