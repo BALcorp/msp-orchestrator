@@ -1,6 +1,6 @@
 {
   "name": "msp-orchestrator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Orchestrator for My Sweet Paris application",
   "main": "index.js",
   "scripts": {

@@ -62,8 +62,8 @@ apiRouter.route('/msp-orchestrator/rest/api/private/bookings').get(asyncToResp (
 );
 
 // Method that fetches all available products (not booked) within a given period.
-// Example URL : http://localhost:8054/msp-orchestrator/rest/api/private/bookings/2020-08-01/2020-09-30
-apiRouter.route('/msp-orchestrator/rest/api/private/bookings/:startDate/:endDate').get(asyncToResp (
+// Example URL : http://localhost:8054/msp-orchestrator/rest/api/private/products/2020-08-01/2020-09-30
+apiRouter.route('/msp-orchestrator/rest/api/private/products/:startDate/:endDate').get(asyncToResp (
 	async function(req) {
 		try {
 			const startDate = req.params.startDate;
@@ -73,7 +73,7 @@ apiRouter.route('/msp-orchestrator/rest/api/private/bookings/:startDate/:endDate
 			const bookings = httpResponse.data;
 			const allProductsUrl = mspProductHousingUrl + "/public/product";
 			httpResponse = await axios.get(allProductsUrl);
-			const products = httpResponse.data;
+			let products = httpResponse.data;
 			let idProduct;
 			let productByIdUrl;
 			let booking;
