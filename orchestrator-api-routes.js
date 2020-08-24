@@ -1,4 +1,4 @@
-const mspOrderUrl = "http://localhost:5000/msp-order/rest/api";
+const mspOrderUrl = "http://localhost:8051/msp-order/rest/api";
 const mspProductHousingUrl = "http://localhost:8050/msp-product-housing/rest/product-api";
 
 const express = require('express');
@@ -30,11 +30,11 @@ app.get("fin_url" , asyncToResp(
 */
 
 // Method that fetches all bookings with some product details, given the client Id.
-// Example URL http://localhost:8054/msp-orchestrator/rest/api/private/bookings?clientId=1
+// Example URL http://localhost:8054/msp-orchestrator/rest/api/private/bookings?userId=1
 apiRouter.route('/msp-orchestrator/rest/api/private/bookings').get(asyncToResp (
 	async function(req) {
 		try {
-			const idBooking = parseInt(req.query.clientId);
+			const idBooking = parseInt(req.query.userId);
 			const bookingsByIdUrl = mspOrderUrl + "/private/bookings/" + idBooking;
 			let httpResponse = await axios.get(bookingsByIdUrl);
 			let bookings = httpResponse.data;
