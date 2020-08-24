@@ -1,5 +1,5 @@
-const mspOrderUrl = "http://localhost:8051/msp-order/rest/api";
 const mspProductHousingUrl = "http://localhost:8050/msp-product-housing/rest/product-api";
+const mspOrderUrl = "http://localhost:8051/msp-order/rest/booking-api";
 
 const express = require('express');
 const apiRouter = express.Router();
