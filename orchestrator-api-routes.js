@@ -30,8 +30,8 @@ app.get("fin_url" , asyncToResp(
 */
 
 // Method that fetches all bookings with some product details, given the client Id.
-// Example URL http://localhost:8054/msp-orchestrator/rest/api/private/bookings?userId=1
-apiRouter.route('/msp-orchestrator/rest/api/private/bookings').get(asyncToResp (
+// Example URL http://localhost:8054/msp-orchestrator/rest/orchestrator-api/private/bookings?userId=1
+apiRouter.route('/msp-orchestrator/rest/orchestrator-api/private/bookings').get(asyncToResp (
 	async function(req) {
 		try {
 			const idBooking = parseInt(req.query.userId);
@@ -60,8 +60,8 @@ apiRouter.route('/msp-orchestrator/rest/api/private/bookings').get(asyncToResp (
 );
 
 // Method that fetches all available products (not booked) within a given period.
-// Example URL : http://localhost:8054/msp-orchestrator/rest/api/private/products/2020-08-01/2020-09-30
-apiRouter.route('/msp-orchestrator/rest/api/private/products/:startDate/:endDate').get(asyncToResp (
+// Example URL : http://localhost:8054/msp-orchestrator/rest/orchestrator-api/private/products/2020-08-01/2020-09-30
+apiRouter.route('/msp-orchestrator/rest/orchestrator-api/private/products/:startDate/:endDate').get(asyncToResp (
 	async function(req) {
 		try {
 			const startDate = req.params.startDate;
