@@ -121,13 +121,7 @@ apiRouter.route('/msp-orchestrator/rest/orchestrator-api/public/products/:startD
 			const bookingsByPeriodUrl = mspOrderUrl + "/private/bookings/" + startDate + "/" + endDate;
 			let httpResponse2 = await axios.get(bookingsByPeriodUrl);
 			const bookings = httpResponse2.data;
-			for (let i in bookings) {
-				booking = bookings[i];
-				for (let j in selectedProducts) {
-					product = selectedProducts[j];
-					if (product.idProduct === booking.idProduct) selectedProducts.splice(j, 1);
-				}
-			}
+			removeBookedProductsFromProducts(bookings, selectedProducts);
 			return selectedProducts;
 		} catch(ex) {
 			throw new Error("Failure")
