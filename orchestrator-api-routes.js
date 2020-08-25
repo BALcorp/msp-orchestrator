@@ -31,7 +31,20 @@ app.get("fin_url" , asyncToResp(
 );
 */
 
-// Method that fetches all bookings with some product details, given the client Id.
+// Function that speaks for itself.
+function removeBookedProductsFromProducts(bookings, products) {
+	let booking;
+	let product;
+	for (let i in bookings) {
+		booking = bookings[i];
+		for (let j in products) {
+			product = products[j];
+			if (product.idProduct === booking.idProduct) products.splice(j, 1);
+		}
+	}
+}
+
+// Function that fetches all bookings with some product details, given the client Id.
 // Example URL http://localhost:8054/msp-orchestrator/rest/orchestrator-api/private/bookings?userId=1
 apiRouter.route('/msp-orchestrator/rest/orchestrator-api/private/bookings').get(asyncToResp (
 	async function(req) {
@@ -61,7 +74,7 @@ apiRouter.route('/msp-orchestrator/rest/orchestrator-api/private/bookings').get(
 	})
 );
 
-// Method that fetches all available products (not booked) within a given period.
+// Function that fetches all available products (not booked) within a given period.
 // Example URL : http://localhost:8054/msp-orchestrator/rest/orchestrator-api/private/products/2020-08-01/2020-09-30
 apiRouter.route('/msp-orchestrator/rest/orchestrator-api/private/products/:startDate/:endDate').get(asyncToResp (
 	async function(req) {
@@ -74,22 +87,7 @@ apiRouter.route('/msp-orchestrator/rest/orchestrator-api/private/products/:start
 			const allProductsUrl = mspProductUrl + "/public/product";
 			httpResponse = await axios.get(allProductsUrl);
 			let products = httpResponse.data;
-			let idProduct;
-			let productByIdUrl;
-			let booking;
-			let bookedProduct;
-			let product;
-			for (let i in bookings) {
-				booking = bookings[i];
-				idProduct = booking.idProduct;
-				productByIdUrl = mspProductUrl + "/public/product/" + idProduct;
-				httpResponse = await axios.get(productByIdUrl);
-				bookedProduct = httpResponse.data;
-				for (let j in products) {
-					product = products[j];
-					if (product.idProduct === bookedProduct.idProduct) products.splice(j, 1);
-				}
-			}
+			removeBookedProductsFromProducts(bookings, products);
 			return products;
 		} catch(ex) {
 			throw new Error("Failure")
