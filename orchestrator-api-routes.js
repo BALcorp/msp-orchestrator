@@ -1,5 +1,7 @@
 const mspProductUrl = "http://localhost:8050/msp-product-housing/rest/product-api";
 const mspOrderUrl = "http://localhost:8051/msp-order/rest/booking-api";
+const mspUsersUrl = "http://localhost:8052/msp-users/rest/user-api";
+const mspAuthUrl = "http://localhost:8055/msp-auth/rest/auth-api";
 
 const express = require('express');
 const apiRouter = express.Router();
@@ -89,6 +91,33 @@ apiRouter.route('/msp-orchestrator/rest/orchestrator-api/private/products/:start
 				}
 			}
 			return products;
+		} catch(ex) {
+			throw new Error("Failure")
+		}
+	})
+);
+
+// User connection method.
+// Needs a json like : {"username":"user","password":"pwd"}
+// Example URL : http://localhost:8054/msp-orchestrator/rest/orchestrator-api/private/login
+apiRouter.route('/msp-orchestrator/rest/orchestrator-api/private/login').post(asyncToResp (
+	async function(req) {
+		try {
+			const username = req.body.username;
+			const password = req.body.password;
+			const authUrl = mspAuthUrl + "/public/login";
+
+			let httpResponse1 = await axios.post(authUrl, {
+				username: username,
+				password: password
+			});
+			let authResp = httpResponse1.data;
+
+			const usersUrl = mspUsersUrl + "/public/login/" + authResp.username;
+			let httpResponse2 = await axios.get(usersUrl);
+			let loginResp = httpResponse2.data;
+
+			return loginResp;
 		} catch(ex) {
 			throw new Error("Failure")
 		}
