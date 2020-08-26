@@ -129,57 +129,6 @@ apiRouter.route('/msp-orchestrator/rest/orchestrator-api/public/products/:startD
 	})
 );
 
-// // Method that fetches all available products (not booked) within a given period, which correspond to the will of the user (size, dailyrate min & max, number of guests....)
-// // Example URL : http://localhost:8054/msp-orchestrator/rest/orchestrator-api/public/products/2020-08-01/2020-09-30?guestNumber=2&zipCode=75001&size=120&dailyrateMin=1000&dailyrateMax=2000&petsAuthorized=true
-// apiRouter.route('/msp-orchestrator/rest/orchestrator-api/public/products/:startDate/:endDate').get(asyncToResp (
-// 	async function(req, res, next) {
-// 		try {
-// 			const startDate = req.params.startDate;
-// 			const endDate = req.params.endDate;
-// 			const bookingsByPeriodUrl = mspOrderUrl + "/private/bookings/" + startDate + "/" + endDate;
-// 			let httpResponse1 = await axios.get(bookingsByPeriodUrl);
-// 			const bookings = httpResponse1.data;
-//
-//
-//
-// 			var guestNumber = parseInt(req.query.guestNumber);
-// 			console.log(guestNumber);
-// 			var zipCode = parseInt(req.query.zipCode);
-// 			console.log(zipCode);
-// 			var size = parseInt(req.query.size);
-// 			console.log(size);
-// 			var dailyrateMin = parseFloat(req.query.dailyrateMin);
-// 			console.log(dailyrateMin);
-// 			var dailyrateMax = parseFloat(req.query.dailyrateMax);
-// 			console.log(dailyrateMax);
-// 			var petsAuthorized = req.query.petsAuthorized;
-// 			console.log(petsAuthorized);
-// 			const selectedProductsUrl = mspProductUrl + "/public/product?guestNumber="+guestNumber+"&zipCode="+zipCode+"&size="+size+"&dailyrateMin="+dailyrateMin+"&dailyrateMax="+dailyrateMax+"&petsAuthorized="+petsAuthorized;
-// 			var httpResponse2 = await axios.get(selectedProductsUrl);
-// 			let selectedProducts = httpResponse2.data;
-// 			console.log(selectedProducts);
-// 			let idProduct;
-// 			let productByIdUrl;
-// 			let booking;
-// 			let bookedProduct;
-// 			let product;
-// 			for (let i in bookings) {
-// 				booking = bookings[i];
-// 				idProduct = booking.idProduct;
-// 				productByIdUrl = mspProductUrl + "/public/product/" + idProduct;
-// 				httpResponse = await axios.get(productByIdUrl);
-// 				bookedProduct = httpResponse.data;
-// 				for (let j in products) {
-// 					product = products[j];
-// 					if (product.idProduct === bookedProduct.idProduct) products.splice(j, 1);
-// 				}
-// 			}
-// 			return products;
-// 		} catch(ex) {
-// 			throw new Error("Failure")
-// 		}
-// 	})
-// );
 
 // User connection method.
 // Needs a json like : {"username":"user","password":"pwd"}
