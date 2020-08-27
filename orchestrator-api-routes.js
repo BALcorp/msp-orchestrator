@@ -31,7 +31,7 @@ app.get("fin_url" , asyncToResp(
 );
 */
 
-// Function that speaks for itself.
+// Function that removes booked products from a list a products.
 function removeBookedProductsFromProducts(bookings, products) {
 	let booking;
 	let product;
@@ -41,6 +41,33 @@ function removeBookedProductsFromProducts(bookings, products) {
 			product = products[j];
 			if (product.idProduct === booking.idProduct) products.splice(j, 1);
 		}
+	}
+}
+
+// Function that replaces adds usernames to a product evaluations.
+async function replaceUserIdByUsernameInProductEvaluations(product) {
+	let evaluations = product.evaluations;
+	let idUser;
+	let userByIdUrl;
+	let evaluation;
+	let user;
+	let httpResponse;
+	for (let i in evaluations) {
+		evaluation = evaluations[i];
+		idUser = evaluation.idUser;
+		userByIdUrl = mspUsersUrl + "/public/user/" + idUser;
+		httpResponse = await axios.get(userByIdUrl);
+		user = httpResponse.data;
+		evaluation.username = user.username;
+	}
+}
+
+// Function that performs the previous one on a list of products.
+async function replaceUserIdByUsernameInAllProductsEvaluations(products) {
+	let product;
+	for (let i in products) {
+		product = products[i];
+		await replaceUserIdByUsernameInProductEvaluations(product)
 	}
 }
 
@@ -88,6 +115,7 @@ apiRouter.route('/msp-orchestrator/rest/orchestrator-api/private/products/:start
 			httpResponse = await axios.get(allProductsUrl);
 			let products = httpResponse.data;
 			removeBookedProductsFromProducts(bookings, products);
+			await replaceUserIdByUsernameInAllProductsEvaluations(products);
 			return products;
 		} catch(ex) {
 			throw new Error("Failure")
@@ -122,6 +150,7 @@ apiRouter.route('/msp-orchestrator/rest/orchestrator-api/public/products/:startD
 			let httpResponse2 = await axios.get(bookingsByPeriodUrl);
 			const bookings = httpResponse2.data;
 			removeBookedProductsFromProducts(bookings, selectedProducts);
+			await replaceUserIdByUsernameInAllProductsEvaluations(selectedProducts);
 			return selectedProducts;
 		} catch(ex) {
 			throw new Error("Failure")
@@ -129,6 +158,38 @@ apiRouter.route('/msp-orchestrator/rest/orchestrator-api/public/products/:startD
 	})
 );
 
+// Function that fetches a product with evaluations containing usernames instead of ids.
+// Example URL http://localhost:8054/msp-orchestrator/rest/orchestrator-api/public/product?productId=1
+apiRouter.route('/msp-orchestrator/rest/orchestrator-api/public/product').get(asyncToResp (
+	async function(req) {
+		try {
+			const idProduct = parseInt(req.query.productId);
+			const productByIdUrl = mspProductUrl + "/public/product/" + idProduct;
+			let httpResponse = await axios.get(productByIdUrl);
+			let product = httpResponse.data;
+			await replaceUserIdByUsernameInProductEvaluations(product)
+			return product;
+		} catch(ex) {
+			throw new Error("Failure")
+		}
+	})
+);
+
+// Function that fetches all products with evaluations containing usernames instead of ids.
+// Example URL http://localhost:8054/msp-orchestrator/rest/orchestrator-api/public/products
+apiRouter.route('/msp-orchestrator/rest/orchestrator-api/public/products').get(asyncToResp (
+	async function(req) {
+		try {
+			const productsByIdUrl = mspProductUrl + "/public/product/";
+			let httpResponse = await axios.get(productsByIdUrl);
+			let products = httpResponse.data;
+			await replaceUserIdByUsernameInAllProductsEvaluations(products);
+			return products;
+		} catch(ex) {
+			throw new Error("Failure")
+		}
+	})
+);
 
 // User connection method.
 // Needs a json like : {"username":"user","password":"pwd"}
