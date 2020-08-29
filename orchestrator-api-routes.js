@@ -214,6 +214,7 @@ apiRouter.route('/msp-orchestrator/rest/orchestrator-api/private/bookmarks').get
 				product = httpResponse.data;
 				products.push(product);
 			}
+			await replaceUserIdByUsernameInAllProductsEvaluations(products);
 			return products;
 		} catch(ex) {
 			throw new Error("Failure")
