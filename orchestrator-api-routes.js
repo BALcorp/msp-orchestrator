@@ -1,6 +1,7 @@
 const mspProductUrl = "http://localhost:8050/msp-product-housing/rest/product-api";
 const mspOrderUrl = "http://localhost:8051/msp-order/rest/booking-api";
 const mspUsersUrl = "http://localhost:8052/msp-users/rest/user-api";
+const mspBookmarkUrl = "http://localhost:8052/msp-users/rest/bookmark-api";
 const mspAuthUrl = "http://localhost:8055/msp-auth/rest/auth-api";
 
 const express = require('express');
@@ -184,6 +185,35 @@ apiRouter.route('/msp-orchestrator/rest/orchestrator-api/public/products').get(a
 			let httpResponse = await axios.get(productsByIdUrl);
 			let products = httpResponse.data;
 			await replaceUserIdByUsernameInAllProductsEvaluations(products);
+			return products;
+		} catch(ex) {
+			throw new Error("Failure")
+		}
+	})
+);
+
+// Function that fetches all bookmarked products of a client, given its user Id.
+// Example URL http://localhost:8054/msp-orchestrator/rest/orchestrator-api/private/bookmarks?idUser=1
+apiRouter.route('/msp-orchestrator/rest/orchestrator-api/private/bookmarks').get(asyncToResp (
+	async function(req) {
+		try {
+			const idUser = parseInt(req.query.idUser);
+			const bookmarksByIdUrl = mspBookmarkUrl + "/private/bookmark/" + idUser;
+			let httpResponse = await axios.get(bookmarksByIdUrl);
+			let bookmarks = httpResponse.data;
+			let idProduct;
+			let productByIdUrl;
+			let bookmark;
+			let product;
+			let products = [];
+			for (let i in bookmarks) {
+				bookmark = bookmarks[i];
+				idProduct = bookmark.idProduct;
+				productByIdUrl = mspProductUrl + "/public/product/" + idProduct;
+				httpResponse = await axios.get(productByIdUrl);
+				product = httpResponse.data;
+				products.push(product);
+			}
 			return products;
 		} catch(ex) {
 			throw new Error("Failure")
