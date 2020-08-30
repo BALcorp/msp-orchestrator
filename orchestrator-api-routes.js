@@ -1,8 +1,8 @@
-const mspProductUrl = "http://localhost:8050/msp-product-housing/rest/product-api";
-const mspOrderUrl = "http://localhost:8051/msp-order/rest/booking-api";
-const mspUsersUrl = "http://localhost:8052/msp-users/rest/user-api";
-const mspBookmarkUrl = "http://localhost:8052/msp-users/rest/bookmark-api";
-const mspAuthUrl = "http://localhost:8055/msp-auth/rest/auth-api";
+const mspProductUrl = "http://mspproducthousing-env.eba-3pig2p3f.eu-west-3.elasticbeanstalk.com/msp-product-housing/rest/product-api";
+const mspOrderUrl = "http://mspOrder-env-1.eba-cwegdnzk.eu-west-3.elasticbeanstalk.com/msp-order/rest/booking-api";
+const mspUsersUrl = "http://mspusers-env.eba-8uzpmgpf.eu-west-3.elasticbeanstalk.com/msp-users/rest/user-api";
+const mspBookmarkUrl = "http://mspusers-env.eba-8uzpmgpf.eu-west-3.elasticbeanstalk.com/msp-users/rest/bookmark-api";
+const mspAuthUrl = "http://mspauth-env.eba-apa3zjzc.eu-west-3.elasticbeanstalk.com/msp-auth/rest/auth-api";
 
 const express = require('express');
 const apiRouter = express.Router();
