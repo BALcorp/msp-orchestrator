@@ -131,17 +131,11 @@ apiRouter.route('/msp-orchestrator/rest/orchestrator-api/public/products/:startD
 	async function(req, res, next) {
 		try {
 			var guestNumber = parseInt(req.query.guestNumber);
-			console.log(guestNumber);
 			var zipCode = req.query.zipCode;
-			console.log(zipCode);
 			var size = parseInt(req.query.size);
-			console.log(size);
 			var dailyrateMin = parseFloat(req.query.dailyrateMin);
-			console.log(dailyrateMin);
 			var dailyrateMax = parseFloat(req.query.dailyrateMax);
-			console.log(dailyrateMax);
 			var petsAuthorized = req.query.petsAuthorized;
-			console.log(petsAuthorized);
 			const selectedProductsUrl = mspProductUrl + "/public/product?guestNumber=" + guestNumber + "&zipCode=" + zipCode + "&size=" + size + "&dailyrateMin=" + dailyrateMin + "&dailyrateMax=" + dailyrateMax + "&petsAuthorized=" + petsAuthorized;
 			var httpResponse1 = await axios.get(selectedProductsUrl);
 			let selectedProducts = httpResponse1.data;
