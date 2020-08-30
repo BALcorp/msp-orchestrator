@@ -1,8 +1,9 @@
-const mspProductUrl = "http://localhost:8050/msp-product-housing/rest/product-api";
-const mspOrderUrl = "http://localhost:8051/msp-order/rest/booking-api";
-const mspUsersUrl = "http://localhost:8052/msp-users/rest/user-api";
-const mspBookmarkUrl = "http://localhost:8052/msp-users/rest/bookmark-api";
-const mspAuthUrl = "http://localhost:8055/msp-auth/rest/auth-api";
+const mspProductUrl = "http://mspproducthousing-env.eba-pfgrwnm8.us-east-2.elasticbeanstalk.com/msp-product-housing/rest/product-api";
+const mspOrderUrl = "http://msporder-env-1.eba-cwegdnzk.eu-west-3.elasticbeanstalk.com/msp-order/rest/booking-api";
+const mspUsersUrl = "http://mspusers-env.eba-8uzpmgpf.eu-west-3.elasticbeanstalk.com/msp-users/rest/user-api";
+
+const mspBookmarkUrl = "http://mspusers-env.eba-8uzpmgpf.eu-west-3.elasticbeanstalk.com/msp-users/rest/bookmark-api";
+const mspAuthUrl = "http://mspauth-env.eba-apa3zjzc.eu-west-3.elasticbeanstalk.com/msp-auth/rest/auth-api";
 
 const express = require('express');
 const apiRouter = express.Router();
@@ -10,7 +11,7 @@ const axios = require("axios");
 
 // Utility function that encapsulate an async function within an express route.
 function asyncToResp(fn) {
-	return function(req, res, next) {
+	return function (req, res, next) {
 		// fn is an alias/reference to an async function (returning data in Promise).
 		fn(req, res, next)
 			.then((data)=> { res.send(data) }) // return of a result converted in Json.
@@ -73,7 +74,7 @@ async function replaceUserIdByUsernameInAllProductsEvaluations(products) {
 }
 
 // Function that fetches all bookings with some product details, given the client Id.
-// Example URL http://localhost:8054/msp-orchestrator/rest/orchestrator-api/private/bookings?userId=1
+// Example URL http://localhost:5000/msp-orchestrator/rest/orchestrator-api/private/bookings?userId=1
 apiRouter.route('/msp-orchestrator/rest/orchestrator-api/private/bookings').get(asyncToResp (
 	async function(req) {
 		try {
@@ -103,7 +104,7 @@ apiRouter.route('/msp-orchestrator/rest/orchestrator-api/private/bookings').get(
 );
 
 // Function that fetches all available products (not booked) within a given period.
-// Example URL : http://localhost:8054/msp-orchestrator/rest/orchestrator-api/private/products/2020-08-01/2020-09-30
+// Example URL : http://localhost:5000/msp-orchestrator/rest/orchestrator-api/private/products/2020-08-01/2020-09-30
 apiRouter.route('/msp-orchestrator/rest/orchestrator-api/private/products/:startDate/:endDate').get(asyncToResp (
 	async function(req) {
 		try {
@@ -126,7 +127,7 @@ apiRouter.route('/msp-orchestrator/rest/orchestrator-api/private/products/:start
 
 
 // Method that fetches all available products (not booked) within a given period, which correspond to the will of the user (size, dailyrate min & max, number of guests....)
-// Example URL : http://localhost:8054/msp-orchestrator/rest/orchestrator-api/public/products/2020-08-01/2020-09-30?guestNumber=2&zipCode=75001&size=120&dailyrateMin=1000&dailyrateMax=2000&petsAuthorized=true
+// Example URL : http://localhost:5000/msp-orchestrator/rest/orchestrator-api/public/products/2020-08-01/2020-09-30?guestNumber=2&zipCode=75001&size=120&dailyrateMin=1000&dailyrateMax=2000&petsAuthorized=true
 apiRouter.route('/msp-orchestrator/rest/orchestrator-api/public/products/:startDate/:endDate').get(asyncToResp (
 	async function(req, res, next) {
 		try {
@@ -160,7 +161,7 @@ apiRouter.route('/msp-orchestrator/rest/orchestrator-api/public/products/:startD
 );
 
 // Function that fetches a product with evaluations containing usernames instead of ids.
-// Example URL http://localhost:8054/msp-orchestrator/rest/orchestrator-api/public/product?productId=1
+// Example URL http://localhost:5000/msp-orchestrator/rest/orchestrator-api/public/product?productId=1
 apiRouter.route('/msp-orchestrator/rest/orchestrator-api/public/product').get(asyncToResp (
 	async function(req) {
 		try {
@@ -177,7 +178,7 @@ apiRouter.route('/msp-orchestrator/rest/orchestrator-api/public/product').get(as
 );
 
 // Function that fetches all products with evaluations containing usernames instead of ids.
-// Example URL http://localhost:8054/msp-orchestrator/rest/orchestrator-api/public/products
+// Example URL http://localhost:5000/msp-orchestrator/rest/orchestrator-api/public/products
 apiRouter.route('/msp-orchestrator/rest/orchestrator-api/public/products').get(asyncToResp (
 	async function(req) {
 		try {
@@ -193,7 +194,7 @@ apiRouter.route('/msp-orchestrator/rest/orchestrator-api/public/products').get(a
 );
 
 // Function that fetches all bookmarked products of a client, given its user Id.
-// Example URL http://localhost:8054/msp-orchestrator/rest/orchestrator-api/private/bookmarks?idUser=1
+// Example URL http://localhost:5000/msp-orchestrator/rest/orchestrator-api/private/bookmarks?idUser=1
 apiRouter.route('/msp-orchestrator/rest/orchestrator-api/private/bookmarks').get(asyncToResp (
 	async function(req) {
 		try {
@@ -224,7 +225,7 @@ apiRouter.route('/msp-orchestrator/rest/orchestrator-api/private/bookmarks').get
 
 // User connection method.
 // Needs a json like : {"username":"user","password":"pwd"}
-// Example URL : http://localhost:8054/msp-orchestrator/rest/orchestrator-api/public/login
+// Example URL : http://localhost:5000/msp-orchestrator/rest/orchestrator-api/public/login
 apiRouter.route('/msp-orchestrator/rest/orchestrator-api/public/login').post(asyncToResp (
 	async function(req) {
 		try {

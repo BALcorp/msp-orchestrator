@@ -30,6 +30,6 @@ res.redirect('html/index.html');
 
 app.use(orchestratorApiRoutes.apiRouter);
 
-app.listen(8054 , function () {
-console.log("http://localhost:8054");
+app.listen(5000, function () {
+    console.log("http://localhost:5000");
 });
