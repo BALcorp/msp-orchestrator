@@ -4,7 +4,9 @@
 // const mspBookmarkUrl = "http://mspusers-env.eba-8uzpmgpf.eu-west-3.elasticbeanstalk.com/msp-users/rest/bookmark-api";
 // const mspAuthUrl = "http://mspauth-env.eba-apa3zjzc.eu-west-3.elasticbeanstalk.com/msp-auth/rest/auth-api";
 
-const mspProductUrl = "http://localhost:8050/msp-product-housing/rest/product-api";
+const mspProductUrl = "http://15.237.82.41:8050/msp-product-housing/rest/product-api";
+// const mspProductUrl = "http://localhost:8050/msp-product-housing/rest/product-api";
+
 const mspOrderUrl = "http://localhost:8051/msp-order/rest/booking-api";
 const mspUsersUrl = "http://localhost:8052/msp-users/rest/user-api";
 const mspBookmarkUrl = "http://localhost:8052/msp-users/rest/bookmark-api";
