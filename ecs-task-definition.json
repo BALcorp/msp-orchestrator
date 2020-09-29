@@ -1,0 +1,24 @@
+{
+  "family": "msp-orchestrator",
+  "executionRoleArn": "arn:aws:iam::177047910560:role/ecsTaskExecutionRole",
+  "networkMode": "awsvpc",
+  "containerDefinitions": [
+    {
+      "name": "msp-orchestrator",
+      "image": "177047910560.dkr.ecr.eu-west-3.amazonaws.com/msp-orchestrator:latest",
+      "portMappings": [
+        {
+          "containerPort": 8054,
+          "hostPort": 8054,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true
+    }
+  ],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "256",
+  "memory": "512"
+}
