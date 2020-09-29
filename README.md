@@ -7,9 +7,9 @@ Home rental and experience manager in Paris
 Orchestrator webservice for MySweetParis app
 
 
-The server listens on port 5000 by default:
+The server listens on port 8054 by default:
 ```sh
-curl http://localhost:5000
+curl http://localhost:8054
 ```
 ```
 Yo !
